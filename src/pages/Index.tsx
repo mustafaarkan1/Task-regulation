@@ -1,31 +1,41 @@
 
 import React, { useState, useEffect } from 'react';
-import { Plus, Check, Trash2, Edit, Calendar, Flag, Search, Filter, Sun, Moon } from 'lucide-react';
+import { Plus, Check, Search, Sun, Moon, Shield } from 'lucide-react';
 import TaskCard from '@/components/TaskCard';
 import TaskForm from '@/components/TaskForm';
 import FilterBar from '@/components/FilterBar';
+import AuthModal from '@/components/AuthModal';
+import UserProfile from '@/components/UserProfile';
+import { AuthProvider, useAuth } from '@/hooks/useAuth';
 import { Task, TaskPriority, TaskCategory } from '@/types/task';
 
-const Index = () => {
+const TaskManager = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [showTaskForm, setShowTaskForm] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [filter, setFilter] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [darkMode, setDarkMode] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+
+  const { user, isLoading } = useAuth();
 
   // Load tasks from localStorage on component mount
   useEffect(() => {
-    const savedTasks = localStorage.getItem('tasks');
-    if (savedTasks) {
-      setTasks(JSON.parse(savedTasks));
+    if (user) {
+      const savedTasks = localStorage.getItem(`tasks_${user.id}`);
+      if (savedTasks) {
+        setTasks(JSON.parse(savedTasks));
+      }
     }
-  }, []);
+  }, [user]);
 
   // Save tasks to localStorage whenever tasks change
   useEffect(() => {
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-  }, [tasks]);
+    if (user && tasks.length >= 0) {
+      localStorage.setItem(`tasks_${user.id}`, JSON.stringify(tasks));
+    }
+  }, [tasks, user]);
 
   const addTask = (taskData: Omit<Task, 'id' | 'createdAt' | 'isCompleted'>) => {
     const newTask: Task = {
@@ -93,6 +103,81 @@ const Index = () => {
   const totalTasks = tasks.length;
   const progressPercentage = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center">
+        <div className="text-center animate-fade-in">
+          <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
+            <Check className="w-8 h-8 text-white" />
+          </div>
+          <p className="text-gray-600 font-medium">جاري التحميل...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+        {/* Hero Section */}
+        <div className="container mx-auto px-4 py-16">
+          <div className="text-center max-w-4xl mx-auto">
+            <div className="w-24 h-24 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-8 animate-scale-in">
+              <Check className="w-12 h-12 text-white" />
+            </div>
+            
+            <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent animate-fade-in">
+              إدارة المهام الذكية
+            </h1>
+            
+            <p className="text-xl text-gray-600 mb-8 leading-relaxed animate-fade-in">
+              نظام متقدم لإدارة مهامك اليومية مع تصميم عصري وميزات ذكية لتحسين إنتاجيتك
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12 animate-fade-in">
+              <button
+                onClick={() => setShowAuthModal(true)}
+                className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-4 rounded-xl font-medium text-lg hover:shadow-lg hover:scale-105 transition-all duration-200 flex items-center justify-center space-x-2"
+              >
+                <Shield className="w-5 h-5" />
+                <span>ابدأ الآن مجاناً</span>
+              </button>
+            </div>
+
+            {/* Features Grid */}
+            <div className="grid md:grid-cols-3 gap-8 mt-16">
+              <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow animate-fade-in">
+                <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-4">
+                  <Check className="w-6 h-6 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2">إدارة ذكية</h3>
+                <p className="text-gray-600">تنظيم مهامك بطريقة ذكية مع فلاتر وتصنيفات متقدمة</p>
+              </div>
+              
+              <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow animate-fade-in">
+                <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mb-4">
+                  <Shield className="w-6 h-6 text-purple-600" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2">حماية البيانات</h3>
+                <p className="text-gray-600">بياناتك محمية ومشفرة مع إمكانية الوصول من أي جهاز</p>
+              </div>
+              
+              <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow animate-fade-in">
+                <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mb-4">
+                  <Plus className="w-6 h-6 text-green-600" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2">سهولة الاستخدام</h3>
+                <p className="text-gray-600">واجهة بسيطة وجميلة تجعل إدارة المهام متعة</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <AuthModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} />
+      </div>
+    );
+  }
+
   return (
     <div className={`min-h-screen transition-colors duration-300 ${
       darkMode ? 'bg-gray-900 text-white' : 'bg-gradient-to-br from-blue-50 via-white to-purple-50'
@@ -102,7 +187,7 @@ const Index = () => {
         <div className="max-w-6xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+              <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center animate-pulse">
                 <Check className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -133,6 +218,8 @@ const Index = () => {
                 <Plus className="w-5 h-5" />
                 <span>مهمة جديدة</span>
               </button>
+              
+              <UserProfile />
             </div>
           </div>
           
@@ -182,18 +269,23 @@ const Index = () => {
         {/* Tasks Grid */}
         {filteredTasks.length > 0 ? (
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {filteredTasks.map((task) => (
-              <TaskCard
+            {filteredTasks.map((task, index) => (
+              <div
                 key={task.id}
-                task={task}
-                onToggleComplete={toggleTaskComplete}
-                onEdit={editTask}
-                onDelete={deleteTask}
-              />
+                className="animate-fade-in"
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                <TaskCard
+                  task={task}
+                  onToggleComplete={toggleTaskComplete}
+                  onEdit={editTask}
+                  onDelete={deleteTask}
+                />
+              </div>
             ))}
           </div>
         ) : (
-          <div className="text-center py-16">
+          <div className="text-center py-16 animate-fade-in">
             <div className="w-24 h-24 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900 dark:to-purple-900 rounded-full flex items-center justify-center mx-auto mb-6">
               <Check className="w-12 h-12 text-gray-400" />
             </div>
@@ -218,6 +310,14 @@ const Index = () => {
         )}
       </div>
     </div>
+  );
+};
+
+const Index = () => {
+  return (
+    <AuthProvider>
+      <TaskManager />
+    </AuthProvider>
   );
 };
 
