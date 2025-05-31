@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { Check, Edit, Trash2, Calendar, Flag, Clock } from 'lucide-react';
+import { Check, Edit, Trash2, Calendar, Flag, Clock, Star } from 'lucide-react';
 import { Task } from '@/types/task';
 
 interface TaskCardProps {
@@ -12,16 +11,16 @@ interface TaskCardProps {
 
 const TaskCard: React.FC<TaskCardProps> = ({ task, onToggleComplete, onEdit, onDelete }) => {
   const priorityColors = {
-    high: 'text-red-500 bg-red-100 dark:bg-red-900/30',
-    medium: 'text-yellow-500 bg-yellow-100 dark:bg-yellow-900/30',
-    low: 'text-green-500 bg-green-100 dark:bg-green-900/30'
+    high: 'text-red-500 bg-gradient-to-r from-red-100 to-pink-100 dark:from-red-900/30 dark:to-pink-900/30',
+    medium: 'text-yellow-500 bg-gradient-to-r from-yellow-100 to-orange-100 dark:from-yellow-900/30 dark:to-orange-900/30',
+    low: 'text-green-500 bg-gradient-to-r from-green-100 to-emerald-100 dark:from-green-900/30 dark:to-emerald-900/30'
   };
 
   const categoryColors = {
-    work: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
-    personal: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400',
-    study: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400',
-    other: 'bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400'
+    work: 'bg-gradient-to-r from-blue-100 to-cyan-100 text-blue-700 dark:from-blue-900/30 dark:to-cyan-900/30 dark:text-blue-400',
+    personal: 'bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700 dark:from-purple-900/30 dark:to-pink-900/30 dark:text-purple-400',
+    study: 'bg-gradient-to-r from-emerald-100 to-teal-100 text-emerald-700 dark:from-emerald-900/30 dark:to-teal-900/30 dark:text-emerald-400',
+    other: 'bg-gradient-to-r from-gray-100 to-slate-100 text-gray-700 dark:from-gray-900/30 dark:to-slate-900/30 dark:text-gray-400'
   };
 
   const categoryLabels = {
@@ -40,27 +39,27 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onToggleComplete, onEdit, onD
   const isOverdue = task.dueDate && new Date(task.dueDate) < new Date() && !task.isCompleted;
 
   return (
-    <div className={`bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition-all duration-200 ${
-      task.isCompleted ? 'opacity-75' : ''
-    } ${isOverdue ? 'border-red-300 dark:border-red-700' : ''}`}>
+    <div className={`card-modern rounded-2xl shadow-lg border p-6 transition-all duration-300 ${
+      task.isCompleted ? 'opacity-75 scale-95' : 'hover-lift hover-glow'
+    } ${isOverdue ? 'border-red-300 dark:border-red-700 animate-pulse-slow' : 'border-white/30'}`}>
       
-      {/* Header */}
-      <div className="flex items-start justify-between mb-4">
+      {/* Enhanced Header */}
+      <div className="flex items-start justify-between mb-6">
         <div className="flex items-center space-x-3">
           <button
             onClick={() => onToggleComplete(task.id)}
-            className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${
+            className={`w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all duration-300 hover:scale-110 ${
               task.isCompleted
-                ? 'bg-gradient-to-r from-green-500 to-emerald-500 border-green-500'
-                : 'border-gray-300 dark:border-gray-600 hover:border-green-500'
+                ? 'bg-gradient-to-r from-green-400 to-emerald-500 border-green-500 animate-bounce-soft'
+                : 'border-gray-300 dark:border-gray-600 hover:border-green-500 hover-glow'
             }`}
           >
-            {task.isCompleted && <Check className="w-4 h-4 text-white" />}
+            {task.isCompleted && <Check className="w-5 h-5 text-white" />}
           </button>
           
           <div className="flex items-center space-x-2">
-            <span className={`inline-block w-2 h-2 rounded-full ${priorityColors[task.priority].split(' ')[1]}`}></span>
-            <span className={`text-xs px-2 py-1 rounded-full font-medium ${priorityColors[task.priority]}`}>
+            <Star className={`w-4 h-4 ${priorityColors[task.priority].split(' ')[0]}`} />
+            <span className={`text-xs px-3 py-1 rounded-full font-bold ${priorityColors[task.priority]}`}>
               {priorityLabels[task.priority]}
             </span>
           </div>
@@ -69,29 +68,29 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onToggleComplete, onEdit, onD
         <div className="flex items-center space-x-2">
           <button
             onClick={() => onEdit(task)}
-            className="p-1.5 text-gray-400 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg transition-all"
+            className="p-2 text-gray-400 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-xl transition-all duration-200 hover:scale-110"
           >
-            <Edit className="w-4 h-4" />
+            <Edit className="w-5 h-5" />
           </button>
           <button
             onClick={() => onDelete(task.id)}
-            className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-all"
+            className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-xl transition-all duration-200 hover:scale-110"
           >
-            <Trash2 className="w-4 h-4" />
+            <Trash2 className="w-5 h-5" />
           </button>
         </div>
       </div>
 
-      {/* Content */}
-      <div className="mb-4">
-        <h3 className={`font-semibold text-lg mb-2 ${
-          task.isCompleted ? 'line-through text-gray-500 dark:text-gray-400' : 'text-gray-900 dark:text-white'
+      {/* Enhanced Content */}
+      <div className="mb-6">
+        <h3 className={`font-bold text-xl mb-3 transition-all duration-300 ${
+          task.isCompleted ? 'line-through text-gray-500 dark:text-gray-400' : 'text-gray-900 dark:text-white hover:gradient-text'
         }`}>
           {task.title}
         </h3>
         
         {task.description && (
-          <p className={`text-sm leading-relaxed ${
+          <p className={`text-base leading-relaxed transition-all duration-300 ${
             task.isCompleted ? 'line-through text-gray-400' : 'text-gray-600 dark:text-gray-300'
           }`}>
             {task.description}
@@ -99,17 +98,17 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onToggleComplete, onEdit, onD
         )}
       </div>
 
-      {/* Footer */}
-      <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+      {/* Enhanced Footer */}
+      <div className="flex items-center justify-between text-sm">
         <div className="flex items-center space-x-4">
-          <span className={`px-2 py-1 rounded-full font-medium ${categoryColors[task.category]}`}>
+          <span className={`px-3 py-2 rounded-xl font-bold text-xs ${categoryColors[task.category]}`}>
             {categoryLabels[task.category]}
           </span>
           
           {task.dueDate && (
-            <div className={`flex items-center space-x-1 ${isOverdue ? 'text-red-500' : ''}`}>
-              <Calendar className="w-3 h-3" />
-              <span>
+            <div className={`flex items-center space-x-2 px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 ${isOverdue ? 'text-red-500 animate-pulse' : 'text-gray-600 dark:text-gray-300'}`}>
+              <Calendar className="w-4 h-4" />
+              <span className="font-medium">
                 {new Date(task.dueDate).toLocaleDateString('ar-SA', {
                   month: 'short',
                   day: 'numeric'
@@ -119,9 +118,9 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onToggleComplete, onEdit, onD
           )}
         </div>
 
-        <div className="flex items-center space-x-1">
-          <Clock className="w-3 h-3" />
-          <span>
+        <div className="flex items-center space-x-2 text-gray-500 dark:text-gray-400">
+          <Clock className="w-4 h-4" />
+          <span className="text-xs font-medium">
             {new Date(task.createdAt).toLocaleDateString('ar-SA', {
               month: 'short',
               day: 'numeric'
@@ -131,9 +130,10 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onToggleComplete, onEdit, onD
       </div>
 
       {isOverdue && (
-        <div className="mt-3 px-3 py-2 bg-red-50 dark:bg-red-900/20 rounded-lg">
-          <p className="text-xs text-red-600 dark:text-red-400 font-medium">
-            ⚠️ متأخر عن الموعد المحدد
+        <div className="mt-4 p-3 bg-gradient-to-r from-red-50 to-pink-50 dark:from-red-900/20 dark:to-pink-900/20 rounded-xl border-l-4 border-red-500 animate-slide-in-bottom">
+          <p className="text-sm text-red-600 dark:text-red-400 font-bold flex items-center space-x-2">
+            <span>⚠️</span>
+            <span>متأخر عن الموعد المحدد</span>
           </p>
         </div>
       )}

@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect } from 'react';
-import { Plus, Check, Search, Sun, Moon, Shield } from 'lucide-react';
+import { Plus, Check, Search, Sun, Moon, Shield, Sparkles, Zap, Target } from 'lucide-react';
 import TaskCard from '@/components/TaskCard';
 import TaskForm from '@/components/TaskForm';
 import FilterBar from '@/components/FilterBar';
@@ -105,12 +104,17 @@ const TaskManager = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center">
-        <div className="text-center animate-fade-in">
-          <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
-            <Check className="w-8 h-8 text-white" />
+      <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 flex items-center justify-center">
+        <div className="text-center animate-zoom-in">
+          <div className="w-20 h-20 bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse-slow">
+            <Check className="w-10 h-10 text-white" />
           </div>
-          <p className="text-gray-600 font-medium">جاري التحميل...</p>
+          <div className="flex items-center space-x-2">
+            <div className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce"></div>
+            <div className="w-2 h-2 bg-purple-500 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+            <div className="w-2 h-2 bg-pink-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+          </div>
+          <p className="text-white font-medium mt-4 animate-glow">جاري التحميل...</p>
         </div>
       </div>
     );
@@ -118,56 +122,72 @@ const TaskManager = () => {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+      <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 relative overflow-hidden">
+        {/* Animated Background Elements */}
+        <div className="absolute inset-0">
+          <div className="absolute top-20 left-20 w-72 h-72 bg-cyan-400/20 rounded-full animate-float"></div>
+          <div className="absolute top-40 right-20 w-96 h-96 bg-purple-500/20 rounded-full animate-float" style={{ animationDelay: '2s' }}></div>
+          <div className="absolute bottom-20 left-1/2 w-80 h-80 bg-pink-500/20 rounded-full animate-float" style={{ animationDelay: '4s' }}></div>
+        </div>
+
         {/* Hero Section */}
-        <div className="container mx-auto px-4 py-16">
-          <div className="text-center max-w-4xl mx-auto">
-            <div className="w-24 h-24 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-8 animate-scale-in">
-              <Check className="w-12 h-12 text-white" />
+        <div className="container mx-auto px-4 py-16 relative z-10">
+          <div className="text-center max-w-5xl mx-auto">
+            <div className="w-32 h-32 bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 rounded-3xl flex items-center justify-center mx-auto mb-8 animate-zoom-in hover-lift hover-glow">
+              <Check className="w-16 h-16 text-white" />
             </div>
             
-            <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent animate-fade-in">
-              إدارة المهام الذكية
+            <h1 className="text-7xl font-bold mb-6 animate-slide-in-bottom">
+              <span className="gradient-text">إدارة المهام</span>
+              <br />
+              <span className="text-white">الذكية</span>
             </h1>
             
-            <p className="text-xl text-gray-600 mb-8 leading-relaxed animate-fade-in">
-              نظام متقدم لإدارة مهامك اليومية مع تصميم عصري وميزات ذكية لتحسين إنتاجيتك
+            <p className="text-2xl text-gray-200 mb-12 leading-relaxed animate-slide-in-bottom max-w-3xl mx-auto" style={{ animationDelay: '0.2s' }}>
+              نظام متطور وعصري لإدارة مهامك اليومية مع تصميم حديث وميزات ذكية لتحسين إنتاجيتك وتنظيم حياتك
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12 animate-fade-in">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16 animate-slide-in-bottom" style={{ animationDelay: '0.4s' }}>
               <button
                 onClick={() => setShowAuthModal(true)}
-                className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-4 rounded-xl font-medium text-lg hover:shadow-lg hover:scale-105 transition-all duration-200 flex items-center justify-center space-x-2"
+                className="btn-modern text-white px-10 py-5 rounded-2xl font-bold text-xl flex items-center justify-center space-x-3 hover-lift"
               >
-                <Shield className="w-5 h-5" />
-                <span>ابدأ الآن مجاناً</span>
+                <Shield className="w-6 h-6" />
+                <span>ابدأ رحلتك الآن</span>
+                <Sparkles className="w-6 h-6" />
               </button>
             </div>
 
             {/* Features Grid */}
-            <div className="grid md:grid-cols-3 gap-8 mt-16">
-              <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow animate-fade-in">
-                <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-4">
-                  <Check className="w-6 h-6 text-blue-600" />
+            <div className="grid md:grid-cols-3 gap-8 mt-20">
+              <div className="card-modern rounded-3xl p-8 hover-lift animate-slide-in-left" style={{ animationDelay: '0.6s' }}>
+                <div className="w-16 h-16 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-2xl flex items-center justify-center mb-6 animate-bounce-soft">
+                  <Target className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">إدارة ذكية</h3>
-                <p className="text-gray-600">تنظيم مهامك بطريقة ذكية مع فلاتر وتصنيفات متقدمة</p>
+                <h3 className="text-2xl font-bold mb-4 gradient-text">إدارة ذكية</h3>
+                <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
+                  تنظيم مهامك بطريقة ذكية مع فلاتر وتصنيفات متقدمة وواجهة عصرية
+                </p>
               </div>
               
-              <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow animate-fade-in">
-                <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mb-4">
-                  <Shield className="w-6 h-6 text-purple-600" />
+              <div className="card-modern rounded-3xl p-8 hover-lift animate-slide-in-bottom" style={{ animationDelay: '0.8s' }}>
+                <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mb-6 animate-bounce-soft" style={{ animationDelay: '0.2s' }}>
+                  <Shield className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">حماية البيانات</h3>
-                <p className="text-gray-600">بياناتك محمية ومشفرة مع إمكانية الوصول من أي جهاز</p>
+                <h3 className="text-2xl font-bold mb-4 gradient-text">حماية متقدمة</h3>
+                <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
+                  بياناتك محمية ومشفرة مع إمكانية الوصول الآمن من أي جهاز
+                </p>
               </div>
               
-              <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow animate-fade-in">
-                <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mb-4">
-                  <Plus className="w-6 h-6 text-green-600" />
+              <div className="card-modern rounded-3xl p-8 hover-lift animate-slide-in-right" style={{ animationDelay: '1s' }}>
+                <div className="w-16 h-16 bg-gradient-to-r from-green-400 to-emerald-500 rounded-2xl flex items-center justify-center mb-6 animate-bounce-soft" style={{ animationDelay: '0.4s' }}>
+                  <Zap className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">سهولة الاستخدام</h3>
-                <p className="text-gray-600">واجهة بسيطة وجميلة تجعل إدارة المهام متعة</p>
+                <h3 className="text-2xl font-bold mb-4 gradient-text">سرعة وسهولة</h3>
+                <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
+                  واجهة سريعة وبديهية مع حركات سلسة تجعل إدارة المهام متعة
+                </p>
               </div>
             </div>
           </div>
@@ -179,23 +199,25 @@ const TaskManager = () => {
   }
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${
-      darkMode ? 'bg-gray-900 text-white' : 'bg-gradient-to-br from-blue-50 via-white to-purple-50'
+    <div className={`min-h-screen transition-all duration-500 ${
+      darkMode 
+        ? 'bg-gradient-to-br from-gray-900 via-purple-900 to-indigo-900 text-white' 
+        : 'bg-gradient-to-br from-indigo-50 via-white to-purple-50'
     }`}>
       {/* Header */}
-      <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 dark:bg-gray-900/80 border-b border-gray-200 dark:border-gray-700">
-        <div className="max-w-6xl mx-auto px-4 py-4">
+      <header className="sticky top-0 z-50 glass-effect border-b border-white/20">
+        <div className="max-w-7xl mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center animate-pulse">
-                <Check className="w-6 h-6 text-white" />
+            <div className="flex items-center space-x-6">
+              <div className="w-12 h-12 bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 rounded-2xl flex items-center justify-center animate-rotate-slow">
+                <Check className="w-7 h-7 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                <h1 className="text-3xl font-bold gradient-text">
                   إدارة المهام
                 </h1>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  {totalTasks > 0 ? `${completedTasks} من ${totalTasks} مهمة مكتملة` : 'لا توجد مهام بعد'}
+                <p className="text-sm text-gray-600 dark:text-gray-300">
+                  {totalTasks > 0 ? `${completedTasks} من ${totalTasks} مهمة مكتملة` : 'ابدأ بإضافة مهمتك الأولى'}
                 </p>
               </div>
             </div>
@@ -203,9 +225,9 @@ const TaskManager = () => {
             <div className="flex items-center space-x-4">
               <button
                 onClick={() => setDarkMode(!darkMode)}
-                className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                className="p-3 rounded-xl glass-effect hover-lift transition-all duration-300"
               >
-                {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                {darkMode ? <Sun className="w-6 h-6" /> : <Moon className="w-6 h-6" />}
               </button>
               
               <button
@@ -213,7 +235,7 @@ const TaskManager = () => {
                   setEditingTask(null);
                   setShowTaskForm(true);
                 }}
-                className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-2 rounded-xl font-medium hover:shadow-lg hover:scale-105 transition-all duration-200 flex items-center space-x-2"
+                className="btn-modern text-white px-8 py-3 rounded-2xl font-bold flex items-center space-x-3 hover-lift"
               >
                 <Plus className="w-5 h-5" />
                 <span>مهمة جديدة</span>
@@ -223,12 +245,16 @@ const TaskManager = () => {
             </div>
           </div>
           
-          {/* Progress Bar */}
+          {/* Enhanced Progress Bar */}
           {totalTasks > 0 && (
-            <div className="mt-4">
-              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+            <div className="mt-6 animate-slide-in-bottom">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium">التقدم العام</span>
+                <span className="text-sm font-bold">{Math.round(progressPercentage)}%</span>
+              </div>
+              <div className="w-full bg-white/20 rounded-full h-3 overflow-hidden">
                 <div 
-                  className="bg-gradient-to-r from-blue-500 to-purple-600 h-2 rounded-full transition-all duration-500"
+                  className="bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 h-3 rounded-full transition-all duration-1000 animate-gradient"
                   style={{ width: `${progressPercentage}%` }}
                 ></div>
               </div>
@@ -237,21 +263,23 @@ const TaskManager = () => {
         </div>
       </header>
 
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        {/* Search and Filter */}
-        <div className="mb-8 space-y-4">
-          <div className="relative">
-            <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        {/* Enhanced Search and Filter */}
+        <div className="mb-12 space-y-6">
+          <div className="relative max-w-2xl mx-auto animate-slide-in-bottom">
+            <Search className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-6 h-6" />
             <input
               type="text"
-              placeholder="ابحث في المهام..."
+              placeholder="ابحث في مهامك بذكاء..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pr-12 pl-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+              className="w-full pr-14 pl-6 py-4 rounded-2xl glass-effect focus:ring-4 focus:ring-purple-500/20 focus:border-transparent outline-none transition-all text-lg font-medium"
             />
           </div>
           
-          <FilterBar filter={filter} setFilter={setFilter} />
+          <div className="animate-slide-in-bottom" style={{ animationDelay: '0.2s' }}>
+            <FilterBar filter={filter} setFilter={setFilter} />
+          </div>
         </div>
 
         {/* Task Form Modal */}
@@ -266,13 +294,13 @@ const TaskManager = () => {
           />
         )}
 
-        {/* Tasks Grid */}
+        {/* Enhanced Tasks Grid */}
         {filteredTasks.length > 0 ? (
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {filteredTasks.map((task, index) => (
               <div
                 key={task.id}
-                className="animate-fade-in"
+                className="animate-zoom-in hover-lift"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <TaskCard
@@ -285,23 +313,23 @@ const TaskManager = () => {
             ))}
           </div>
         ) : (
-          <div className="text-center py-16 animate-fade-in">
-            <div className="w-24 h-24 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900 dark:to-purple-900 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Check className="w-12 h-12 text-gray-400" />
+          <div className="text-center py-20 animate-zoom-in">
+            <div className="w-32 h-32 bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 rounded-full flex items-center justify-center mx-auto mb-8 animate-float">
+              <Check className="w-16 h-16 text-gray-400" />
             </div>
-            <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">
+            <h3 className="text-3xl font-bold text-gray-700 dark:text-gray-300 mb-4">
               {searchTerm || filter !== 'all' ? 'لا توجد مهام مطابقة' : 'لا توجد مهام بعد'}
             </h3>
-            <p className="text-gray-500 dark:text-gray-400 mb-6">
+            <p className="text-xl text-gray-500 dark:text-gray-400 mb-8 max-w-md mx-auto">
               {searchTerm || filter !== 'all' 
                 ? 'جرب تغيير معايير البحث أو الفلتر'
-                : 'ابدأ بإضافة مهمتك الأولى'
+                : 'ابدأ بإضافة مهمتك الأولى وشاهد السحر يحدث'
               }
             </p>
             {(!searchTerm && filter === 'all') && (
               <button
                 onClick={() => setShowTaskForm(true)}
-                className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-3 rounded-xl font-medium hover:shadow-lg hover:scale-105 transition-all duration-200"
+                className="btn-modern text-white px-10 py-4 rounded-2xl font-bold text-lg hover-lift"
               >
                 إضافة مهمة جديدة
               </button>
